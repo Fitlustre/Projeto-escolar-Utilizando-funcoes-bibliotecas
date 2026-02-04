@@ -13,35 +13,25 @@ PALAVRAS = [
 ]
 def palavra_aleatoria(): #Retorna uma palavra aleatoria
     return choice(PALAVRAS)
-palavra_certa = palavra_aleatoria()
-print(palavra_certa)
-#Cria um campo onde só aceita o numero de letras que a palavra pede
-#-------------------------------------------------------------------------------------------------------------------
-tamanho = len(palavra_certa)
-lista = []
-for c in range(tamanho):
-    lista.append(list())
-#print(lista)
-print(
-    f'Escreva uma palavra de {tamanho} letras.\n',
-    '[]'*tamanho
-    )
 
-def palpite():
+def palpite(palavra): #Compara o tamanho da de uma palavra com outra e devolve a palavra digitada
     cont = 0
     while True:
-        palavra_esc = input('Palavra: ')
-        if len(palavra_esc) != tamanho:
+        palavra_esc = input('')
+        if len(palavra_esc) != len(palavra):
             cont += 1
             print('Palavra inválida tete novamente!')
             if cont == 3:
-                print(f'\033[33mDica: A palavra tem de conter {tamanho} letras.\033[m')
+                print(f'\033[33mDica: A palavra tem de conter {len(palavra)} letras.\033[m')
         else:
             break
     return palavra_esc
-# palavra certa = palavra 
-palavra_adivinhar = palpite()
-def resultado(palpite, palavra_certa):
+
+
+def resultado(palpite, palavra_certa): #Compara a palavra do palpite com a palavra certa e devolve o resultado colorido 
+    lista=[]
+    for c in range(len(palavra_certa)):
+        lista.append(0)
     for pos, p in enumerate(palpite):
         if p == palavra_certa[pos]:
             lista[pos] = 1
@@ -49,7 +39,7 @@ def resultado(palpite, palavra_certa):
             lista[pos] = 2
         else:
             lista[pos] = 0
-    #print(lista)
+
     for pos, p in enumerate(lista):
         print('[', end='')
         if p == 1:
