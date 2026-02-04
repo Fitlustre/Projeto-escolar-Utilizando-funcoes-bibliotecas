@@ -1,28 +1,61 @@
-import pro
+from random import choice
+PALAVRAS = [
+    "percurso", "detalhe", "memória", "contexto", "desafio",
+    "recurso", "reflexão", "conceito", "impacto", "equilíbrio",
+    "proposta", "iniciativa", "estrutura", "limite", "processo",
+    "resposta", "solução", "elemento", "perspetiva", "objetivo",
+    "estratégia", "relação", "função", "cenário", "dinâmica",
+    "critério", "potencial", "influência", "resultado", "origem",
+    "fator", "sequência", "noção", "evidência", "abordagem",
+    "reação", "sentido", "base", "ligação", "etapa",
+    "condição", "alternativa", "princípio", "controlo", "decisão",
+    "adaptação", "evolução", "análise"
+]
+def palavra_aleatoria(): #Retorna uma palavra aleatoria
+    return choice(PALAVRAS)
+palavra_certa = palavra_aleatoria()
+print(palavra_certa)
+#Cria um campo onde só aceita o numero de letras que a palavra pede
+#-------------------------------------------------------------------------------------------------------------------
+tamanho = len(palavra_certa)
+lista = []
+for c in range(tamanho):
+    lista.append(list())
+#print(lista)
+print(
+    f'Escreva uma palavra de {tamanho} letras.\n',
+    '[]'*tamanho
+    )
 
-
-def jogar():
-    opcoes = ["pedra", "papel", "tesoura"]
-
+def palpite():
+    cont = 0
     while True:
-        computador = random.choice(opcoes)
-        usuario = input("\nEscolha pedra, papel, tesoura (ou 'sair'): ").lower()
-
-        if usuario == "sair":
-            break
-
-        if usuario not in opcoes:
-            print("Escolha inválida!")
-            continue
-
-        if usuario == computador:
-            print(f"Empate! Ambos escolheram {usuario}.")
-        elif (usuario == "pedra" and computador == "tesoura") or \
-                (usuario == "papel" and computador == "pedra") or \
-                (usuario == "tesoura" and computador == "papel"):
-            print(f"Você venceu! {usuario} ganha de {computador}.")
+        palavra_esc = input('Palavra: ')
+        if len(palavra_esc) != tamanho:
+            cont += 1
+            print('Palavra inválida tete novamente!')
+            if cont == 3:
+                print(f'\033[33mDica: A palavra tem de conter {tamanho} letras.\033[m')
         else:
-            print(f"Você perdeu! {computador} ganha de {usuario}.")
-
-
-jogar()
+            break
+    return palavra_esc
+# palavra certa = palavra 
+palavra_adivinhar = palpite()
+def resultado(palpite, palavra_certa):
+    for pos, p in enumerate(palpite):
+        if p == palavra_certa[pos]:
+            lista[pos] = 1
+        elif p in palavra_certa:
+            lista[pos] = 2
+        else:
+            lista[pos] = 0
+    #print(lista)
+    for pos, p in enumerate(lista):
+        print('[', end='')
+        if p == 1:
+            print(f'\033[32m{palpite[pos]}\033[m', end='')
+        elif p == 2:
+            print(f'\033[33m{palpite[pos]}\033[m', end='')
+        elif p == 0:
+            print(f'\033[31m{palpite[pos]}\033[m', end='')
+        print(']', end='')
