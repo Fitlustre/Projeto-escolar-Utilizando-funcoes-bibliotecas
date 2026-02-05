@@ -40,12 +40,12 @@ def resultado(palpite, palavra_certa): #Compara a palavra do palpite com a palav
         else:
             lista[pos] = 0
 
-    for pos, p in enumerate(lista):
+    for pos, l in enumerate(lista):
         print('[', end='')
-        if p == 1:
+        if l == 1:
             print(f'\033[32m{palpite[pos]}\033[m', end='')
-        elif p == 2:
+        elif l == 2:
             print(f'\033[33m{palpite[pos]}\033[m', end='')
-        elif p == 0:
+        elif l == 0:
             print(f'\033[31m{palpite[pos]}\033[m', end='')
         print(']', end='')
