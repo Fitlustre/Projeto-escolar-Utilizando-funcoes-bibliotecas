@@ -1,23 +1,36 @@
 # Termo — Biblioteca Python para jogo de palavras
 
-Esta biblioteca em Python implementa a lógica base de um jogo de adivinhação de palavras inspirado no **Termo**. O foco da biblioteca é fornecer funções simples e diretas para que o utilizador consiga criar um jogo funcional no terminal sem se preocupar com a lógica interna.
+Esta biblioteca em Python implementa a lógica base de um jogo de adivinhação de palavras inspirado no **Termo**, funcionando exclusivamente no **terminal**. O utilizador importa as funções e controla apenas o ciclo do jogo.
 
 ---
 
 ## Conteúdo da biblioteca
 
-A biblioteca disponibiliza:
+A biblioteca contém:
 
-* Uma lista interna de palavras (`PALAVRAS`)
-* Funções para gerir o funcionamento do jogo:
+* Uma lista de palavras (`PALAVRAS`)
+* Quatro funções principais:
 
   * `palavra_aleatoria()`
   * `palpite(palavra)`
-  * `resultado(palpite, palavra_certa)`
+  * `remover_acentos(palavra)`
+  * `comparar(palpite, palavra_certa)`
 
 ---
 
-## Funcionamento
+## Lista de palavras
+
+### `PALAVRAS`
+
+Lista interna de palavras usadas como possíveis palavras secretas.
+
+* Tipo: `list[str]`
+* Contém palavras com acentos
+* Não é necessário modificar ou aceder diretamente
+
+---
+
+## Funções
 
 ### `palavra_aleatoria()`
 
@@ -25,11 +38,15 @@ A biblioteca disponibiliza:
 palavra = palavra_aleatoria()
 ```
 
-Seleciona aleatoriamente uma palavra da lista interna, que será usada como palavra secreta do jogo.
+Seleciona aleatoriamente uma palavra da lista `PALAVRAS`.
 
 **Retorno:**
 
-* `str` — palavra secreta
+* `str` — palavra secreta (pode conter acentos)
+
+**Utilização:**
+
+* Deve ser chamada no início do jogo
 
 ---
 
@@ -39,53 +56,79 @@ Seleciona aleatoriamente uma palavra da lista interna, que será usada como pala
 tentativa = palpite(palavra)
 ```
 
-Solicita ao jogador que introduza uma palavra e verifica se esta tem o mesmo número de letras que a palavra secreta. Caso o tamanho esteja incorreto, o jogador é convidado a tentar novamente. Após três tentativas inválidas, é apresentada uma dica com o número correto de letras.
+Solicita ao jogador que introduza uma palavra no terminal e valida se o número de letras corresponde ao da palavra secreta.
+
+* Caso o tamanho esteja incorreto, o jogador é convidado a tentar novamente
+* Após três tentativas inválidas, é apresentada uma dica com o número correto de letras
 
 **Parâmetros:**
 
-* `palavra` (`str`) — palavra secreta usada para validação do tamanho
+* `palavra` (`str`) — palavra secreta usada apenas para validar o tamanho
 
 **Retorno:**
 
-* `str` — palavra válida introduzida pelo jogador
+* `str` — palavra introduzida pelo jogador com o tamanho correto
 
 ---
 
-### `resultado(palpite, palavra_certa)`
+### `remover_acentos(palavra)`
 
 ```python
-resultado(tentativa, palavra)
+palavra_sem_acentos = remover_acentos(palavra)
 ```
 
-Compara o palpite com a palavra correta e imprime no terminal o resultado com cores, indicando o estado de cada letra.
-
-**Significado das cores:**
-
-* Verde — letra correta na posição correta
-* Amarelo — letra presente na palavra mas noutra posição
-* Vermelho — letra ausente da palavra
+Remove acentos de uma palavra, permitindo comparações corretas entre palavras com e sem acentuação.
 
 **Parâmetros:**
 
-* `palpite` (`str`) — tentativa do jogador
-* `palavra_certa` (`str`) — palavra secreta
+* `palavra` (`str`) — palavra com ou sem acentos
 
 **Retorno:**
 
-* `None` (a função apenas imprime o resultado)
+* `str` — palavra sem acentos
+
+**Observação:**
+
+* Esta função é usada internamente na comparação das palavras
+
+---
+
+### `comparar(palpite, palavra_certa)`
+
+```python
+resultado = comparar(tentativa, palavra)
+```
+
+Compara o palpite do jogador com a palavra secreta, ignorando acentos, e devolve uma string colorida para ser exibida no terminal.
+
+**Lógica de comparação:**
+
+* Verde — letra correta na posição correta
+* Amarelo — letra existente na palavra, mas noutra posição
+* Vermelho — letra inexistente na palavra
+
+**Parâmetros:**
+
+* `palpite` (`str`) — palavra introduzida pelo jogador
+* `palavra_certa` (`str`) — palavra secreta (pode conter acentos)
+
+**Retorno:**
+
+* `str` — palavra colorida com códigos ANSI
 
 ---
 
 ## Exemplo de utilização
 
 ```python
-from termo_lib import palavra_aleatoria, palpite, resultado
+from termo_lib import palavra_aleatoria, palpite, comparar
 
 palavra = palavra_aleatoria()
 
 while True:
     tentativa = palpite(palavra)
-    resultado(tentativa, palavra)
+    resultado = comparar(tentativa, palavra)
+    print(resultado)
 
     if tentativa == palavra:
         print("\nParabéns! Acertaste a palavra.")
@@ -96,14 +139,15 @@ while True:
 
 ## Fluxo do jogo
 
-1. Gerar a palavra secreta
-2. Pedir um palpite válido ao jogador
-3. Avaliar o palpite e mostrar o resultado
-4. Repetir até a palavra ser descoberta
+1. Gerar a palavra secreta com `palavra_aleatoria()`
+2. Ler uma tentativa válida com `palpite()`
+3. Comparar a tentativa com `comparar()`
+4. Mostrar o resultado no terminal
+5. Repetir até o jogador acertar
 
 ---
 
-## Estrutura sugerida do projeto
+## Estrutura recomendada do projeto
 
 ```
 projeto-termo/
@@ -116,4 +160,8 @@ projeto-termo/
 
 ## Notas finais
 
-Esta biblioteca foi desenvolvida com fins educativos, permitindo praticar o uso de funções, módulos e lógica de programação em Python. Pode ser facilmente adaptada ou expandida para outros tipos de interface ou modos de jogo.
+* A biblioteca funciona apenas em ambiente de terminal
+* As cores são aplicadas usando códigos ANSI
+* A comparação ignora acentos para evitar erros de validação
+
+Esta biblioteca foi desenvolvida com fins educativos, focada na prática de funções, módulos e lógica de programação em Python.
