@@ -28,8 +28,9 @@ def palpite(palavra): #Compara o tamanho da de uma palavra com outra e devolve a
     return palavra_esc
 
 
-def resultado(palpite, palavra_certa): #Compara a palavra do palpite com a palavra certa e devolve o resultado colorido 
+def comparar(palpite, palavra_certa): #Compara a palavra do palpite com a palavra certa e devolve o resultado colorido 
     lista=[]
+    palavra = ''
     for c in range(len(palavra_certa)):
         lista.append(0)
     for pos, p in enumerate(palpite):
@@ -41,11 +42,10 @@ def resultado(palpite, palavra_certa): #Compara a palavra do palpite com a palav
             lista[pos] = 0
 
     for pos, l in enumerate(lista):
-        print('[', end='')
         if l == 1:
-            print(f'\033[32m{palpite[pos]}\033[m', end='')
+            palavra += f'\033[32m{palpite[pos]}\033[m'
         elif l == 2:
-            print(f'\033[33m{palpite[pos]}\033[m', end='')
+            palavra += f'\033[33m{palpite[pos]}\033[m'
         elif l == 0:
-            print(f'\033[31m{palpite[pos]}\033[m', end='')
-        print(']', end='')
+            palavra += f'\033[31m{palpite[pos]}\033[m'
+    return palavra
