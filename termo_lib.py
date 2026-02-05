@@ -27,12 +27,12 @@ def palpite(palavra): #Compara o tamanho da de uma palavra com outra e devolve a
             break
     return palavra_esc
 
-def remover_acentos(p):
+def remover_acentos(palavra): #Remove os acentos de uma palavra
     mapa = "áàãâéêíóôõúçÁÀÃÂÉÊÍÓÔÕÚÇ"
     troca = "aaaaeeioooucAAAAEEIOOOUC"
     r = []
 
-    for c in p:
+    for c in palavra:
         if c in mapa:
             r.append(troca[mapa.index(c)])
         else:
@@ -41,9 +41,10 @@ def remover_acentos(p):
     return "".join(r)
 
 def comparar(palpite, palavra_certac): #Compara a palavra do palpite com a palavra certa e devolve o resultado colorido 
-    lista=[]
+    lista = []
     palavra = ''
     palavra_certa = remover_acentos(palavra_certac.lower())
+
     for c in range(len(palavra_certa)):
         lista.append(0)
     for pos, p in enumerate(palpite):
